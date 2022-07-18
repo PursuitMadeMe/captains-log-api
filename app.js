@@ -1,20 +1,22 @@
+// Dependencies
 const express = require("express");
+
+// Configuration
 const app = express();
+
+//Middleware that turns JSON into usable Javascript 
 app.use(express.json());
 
-// const logController = require("./controllers/log.controller");
-
-app.get("/", (request, response) => {
-    response.send("Welcome to Captain's Log");
-  });
-
-//   app.use("/log", logController);
-
-  app.use("*", (req, res) => {
-    res.status(404).send("Sorry, but your URL log not.");
-  });
+const logController = require("./controllers/logsController");
 
 
+app.get("/", (req, res)=>{
+    res.send("Welcome to the Captain's Log")
+});
 
+app.use("/log", logController);
 
-module.exports = app;
+app.get("*", (req, res) => {
+    res.status(404).json({error: "page not found"})
+})
+module.exports = app
